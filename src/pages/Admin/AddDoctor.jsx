@@ -47,7 +47,7 @@ const AddDoctor = () => {
          formData.append("degree", degree);
          formData.append("address", JSON.stringify({ line1: address1, line: address2 }));
 
-         const { data } = await axios.post(`${backendUrl}/api/admin/add-doctor`, formData, { headers: { aToken }, timeout: 120000 });
+         const { data } = await axios.post(`${backendUrl}/api/admin/add-doctor`, formData, { headers: { Authorization: `Bearer ${aToken}` } });
 
          if (data.success) {
             toast.success(data.message);

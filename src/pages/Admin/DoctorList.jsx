@@ -9,7 +9,7 @@ const DoctorList = () => {
       if (aToken) {
          getAllDoctors();
       }
-   }, [aToken, getAllDoctors]);
+   }, [aToken]);
 
 
    return (

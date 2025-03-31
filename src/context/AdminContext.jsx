@@ -18,7 +18,7 @@ const AdminContextProvider = (props) => {
    const getAllDoctors = async () => {
 
       try {
-         const { data } = await axios.post(`${backendUrl}/api/admin/all-doctors`, {}, { headers: { aToken } });
+         const { data } = await axios.post(`${backendUrl}/api/admin/all-doctors`, {}, { headers: { Authorization: `Bearer ${aToken}` } });
 
          if (data.success) {
             setDoctors(data.doctors);
@@ -35,7 +35,7 @@ const AdminContextProvider = (props) => {
    const changeAvailabilty = async (docId) => {
 
       try {
-         const { data } = await axios.post(`${backendUrl}/api/admin/change-availability`, { docId }, { headers: { aToken } });
+         const { data } = await axios.post(`${backendUrl}/api/admin/change-availability`, { docId }, { headers: { Authorization: `Bearer ${aToken}` } });
 
          if (data.success) {
             toast.success(data.message);
@@ -53,7 +53,7 @@ const AdminContextProvider = (props) => {
    const getAllAppointment = async () => {
 
       try {
-         const { data } = await axios.get(`${backendUrl}/api/admin/appointments`, { headers: { aToken } });
+         const { data } = await axios.get(`${backendUrl}/api/admin/appointments`, { headers: { Authorization: `Bearer ${aToken}` } });
 
          if (data.success) {
             setAppointments(data.appointments);
@@ -68,7 +68,7 @@ const AdminContextProvider = (props) => {
    // **Cancel Appointment**
    const cancelAppointment = async (appointmentId) => {
       try {
-         const { data } = await axios.post(`${backendUrl}/api/admin/cancel-appointment`, { appointmentId }, { headers: { aToken } });
+         const { data } = await axios.post(`${backendUrl}/api/admin/cancel-appointment`, { appointmentId }, { headers: { Authorization: `Bearer ${aToken}` } });
          if (data.success) {
             toast.success(data.message);
             getAllAppointment();
@@ -83,7 +83,7 @@ const AdminContextProvider = (props) => {
    // **Get Dashboard Data**
    const getDashboardData = async () => {
       try {
-         const { data } = await axios.get(`${backendUrl}/api/admin/dashboard`, { headers: { aToken } });
+         const { data } = await axios.get(`${backendUrl}/api/admin/dashboard`, { headers: { Authorization: `Bearer ${aToken}` } });
          if (data.success) {
             setDashData(data.dashData);
          } else {
