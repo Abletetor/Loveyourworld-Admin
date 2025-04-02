@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { DoctorContext } from '../../context/DoctorContext';
 import { useEffect } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { assets } from '../../assets/assets';
+import LottieLoader from '../../components/LottieLoader';
 
 
 const DoctorAppointments = () => {
@@ -10,19 +11,31 @@ const DoctorAppointments = () => {
    const { appointments, getDoctorAppointments, dToken, completeAppointment, cancelAppointment } = useContext(DoctorContext);
    const { calculateAge, slotDateFormat, currencySymbol } = useContext(AppContext);
 
+   const [loading, setLoading] = useState(true);
+
    useEffect(() => {
       if (dToken) {
-         getDoctorAppointments();
+         setLoading(true);
+         getDoctorAppointments().finally(() => setLoading(false));
       }
    }, [dToken]);
+
+   if (loading) {
+      return (
+         <LottieLoader message="Loading Appointments..." size="w-100 h-100" />
+      );
+   }
+
    return (
       <div className='w-full max-w-6xl m-5'>
 
-         <p className='mb-3 text-lg font-medium'>All Appointments</p>
+         <p className="mb-3 text-lg font-medium text-[#008080]">
+            All Appointments
+         </p>
 
-         <div className='bg-white border border-white rounded text-sm max-h-[80vh] min-h-[50vh] overflow-y-scroll'>
+         <div className="bg-white border border-[#B2DFDB] rounded text-sm max-h-[80vh] min-h-[60vh] overflow-y-scroll">
 
-            <div className='hidden sm:grid grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr] grid-flow-col py-3 px-6 border-b border-gray-200'>
+            <div className="hidden sm:grid grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr] grid-flow-col py-3 px-6 border-b border-[#B2DFDB] bg-[#E0F2F1] text-[#4A4A4A] font-medium">
                <p>#</p>
                <p>Patients</p>
                <p>Payment</p>
@@ -33,15 +46,16 @@ const DoctorAppointments = () => {
             </div>
 
             { appointments.reverse().map((item, index) => (
-               <div key={ index } className='flex flex-wrap justify-between max-sm:gap-5 max-sm:text-base sm:grid sm:grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr] items-center text-gray-500 py-3 px-6 border-b border-gray-100 hover:bg-gray-100'>
+               <div key={ index }
+                  className="flex flex-wrap justify-between max-sm:gap-2 sm:grid sm:grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr] items-center text-[#4A4A4A] py-3 px-6 border-b border-[#B2DFDB] hover:bg-[#E0F2F1] transition-all">
                   <p className='max-sm:hidden'>{ index + 1 }</p>
 
                   <div className='flex items-center gap-2'>
-                     <img className='w-8 rounded-full' src={ item.userData.image } alt='User-img' />
+                     <img className="w-8 h-8 rounded-full border border-[#B2DFDB]" src={ item.userData.image } alt='User-img' />
                      <p>{ item.userData.name }</p>
                   </div>
                   <div>
-                     <p className='text-xs inline border border-[#5f6fff] px-2 rounded-full'>{ item.payment ? "ONLINE" : "CASH" }</p>
+                     <p className='text-xs inline border border-[#B2DFDB] px-2 rounded-full'>{ item.payment ? "ONLINE" : "CASH" }</p>
                   </div>
                   <p className='max-sm:hidden'>{ calculateAge(item.userData.dob) }</p>
                   <p>{ slotDateFormat(item.slotDate) } | { item.slotTime } </p>

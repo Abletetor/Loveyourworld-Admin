@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // ✅ Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import { AdminContext } from '../context/AdminContext';
 import { DoctorContext } from '../context/DoctorContext';
 import axios from 'axios';
@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { handleError } from '../hooks/handleError';
 
 const Login = () => {
-   const navigate = useNavigate(); // ✅ Initialize useNavigate()
+   const navigate = useNavigate();
    const { setAToken, backendUrl } = useContext(AdminContext);
    const { setDToken } = useContext(DoctorContext);
 
@@ -38,11 +38,12 @@ const Login = () => {
          } else {
             const { data } = await axios.post(`${backendUrl}/api/doctor/login`, { email, password });
 
-            if (data.success) {
-               localStorage.setItem("dToken", data.token);
-               setDToken(data.token);
+
+            if (data.success && data.dtoken) {
+               localStorage.setItem("dToken", data.dtoken);
+               setDToken(data.dtoken);
                toast.success("Doctor login successful!");
-               navigate("/doctor-dashboard"); // ✅ Redirect to Doctor Dashboard
+               navigate("/doctor-dashboard");
             } else {
                toast.error(data.message || "An error occurred");
             }
