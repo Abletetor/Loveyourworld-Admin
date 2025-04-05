@@ -13,6 +13,7 @@ const AdminContextProvider = (props) => {
    const [doctors, setDoctors] = useState([]);
    const [appointments, setAppointments] = useState([]);
    const [dashData, setDashData] = useState(false);
+   const [dashMessages, setDashMessages] = useState(false);
 
    // **Get All Doctors**
    const getAllDoctors = async () => {
@@ -25,7 +26,6 @@ const AdminContextProvider = (props) => {
          } else {
             toast.error(data.message);
          }
-
       } catch (error) {
          handleError(error);
       }
@@ -84,11 +84,38 @@ const AdminContextProvider = (props) => {
    const getDashboardData = async () => {
       try {
          const { data } = await axios.get(`${backendUrl}/api/admin/dashboard`, { headers: { Authorization: `Bearer ${aToken}` } });
-         if (data.success) {
-            setDashData(data.dashData);
-         } else {
-            toast.error(data.message);
-         }
+         data.success ? setDashData(data.dashData) : toast.error(data.message);
+      } catch (error) {
+         handleError(error);
+      }
+   };
+
+   // **Get All Messages**
+   const getAllMessages = async () => {
+      try {
+         const { data } = await axios.get(`${backendUrl}/api/admin/messages`, { headers: { Authorization: `Bearer ${aToken}` } });
+         data.success ? setDashMessages(data.messages) : toast.error(data.message);
+      } catch (error) {
+         handleError(error);
+      }
+   };
+
+   // **Delete Message**
+   const deleteMessageById = async (id) => {
+      try {
+         const { data } = await axios.delete(`${backendUrl}/api/admin/messages/${id}`, { headers: { Authorization: `Bearer ${aToken}` } });
+         data.success ? toast.success(data.message) : toast.error(data.message);
+      } catch (error) {
+         handleError(error);
+         console.log(error);
+      }
+   };
+
+   // **Reply to Message**
+   const replyToMessage = async (id, subject, replyText) => {
+      try {
+         const { data } = await axios.post(`${backendUrl}/api/admin/messages/reply/${id}`, { subject, replyText }, { headers: { Authorization: `Bearer ${aToken}` } });
+         data.success ? toast.success(data.message) : toast.error(data.message);
       } catch (error) {
          handleError(error);
       }
@@ -101,6 +128,8 @@ const AdminContextProvider = (props) => {
       appointments, setAppointments,
       getAllAppointment, cancelAppointment,
       getDashboardData, dashData, setDashData,
+      getAllMessages, dashMessages, setDashMessages,
+      replyToMessage, deleteMessageById
    };
 
    return (

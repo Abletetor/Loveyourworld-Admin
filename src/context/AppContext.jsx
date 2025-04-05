@@ -5,14 +5,26 @@ export const AppContext = createContext();
 const AppContextProvider = (props) => {
 
    const currencySymbol = '$';
+
    // **Calculate Age**
    const calculateAge = (dob) => {
-      const today = new Date();
-      const birthdate = new Date(dob);
+      if (!dob) return "None";
 
+      const birthdate = new Date(dob);
+      if (isNaN(birthdate.getTime())) return "None";
+
+      const today = new Date();
       let age = today.getFullYear() - birthdate.getFullYear();
+
+      // Optional: adjust for month/day not reached yet
+      const m = today.getMonth() - birthdate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthdate.getDate())) {
+         age--;
+      }
+
       return age;
    };
+
 
    // **Date Formater**
    const months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

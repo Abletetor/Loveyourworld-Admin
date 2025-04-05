@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { AdminContext } from '../context/AdminContext';
 import { NavLink } from 'react-router-dom';
 import { assets } from '../assets/assets';
+import { MdMessage } from "react-icons/md";
 import { DoctorContext } from '../context/DoctorContext';
 
 const Sidebar = () => {
@@ -31,6 +32,10 @@ const Sidebar = () => {
                <NavLink to={ '/doctor-list' } className={ ({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer rounded-r-lg ${isActive ? 'bg-[#E0F2F1] border-r-4 border-[#008080] font-semibold' : ''}` }>
                   <img src={ assets.people_icon } alt="People-icon" />
                   <p className='hidden md:block'>Doctor List</p>
+               </NavLink>
+               <NavLink to={ '/messages' } className={ ({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer rounded-r-lg ${isActive ? 'bg-[#E0F2F1] border-r-4 border-[#008080] font-semibold' : ''}` }>
+                  <MdMessage size={ 25 } />
+                  <p className='hidden md:block'>Messages</p>
                </NavLink>
             </ul>
          }
