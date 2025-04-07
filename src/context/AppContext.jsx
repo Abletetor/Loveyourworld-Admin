@@ -8,10 +8,10 @@ const AppContextProvider = (props) => {
 
    // **Calculate Age**
    const calculateAge = (dob) => {
-      if (!dob) return "None";
+      if (!dob) return "N/A";
 
       const birthdate = new Date(dob);
-      if (isNaN(birthdate.getTime())) return "None";
+      if (isNaN(birthdate.getTime())) return "N/A";
 
       const today = new Date();
       let age = today.getFullYear() - birthdate.getFullYear();

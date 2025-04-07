@@ -17,7 +17,7 @@ const DoctorList = () => {
 
    if (loading) {
       return (
-         <LottieLoader message="Loading Dashboard..." size="w-100 h-100" />
+         <LottieLoader message="Loading Doctor List..." size="w-100 h-100" />
       );
    }
 
