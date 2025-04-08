@@ -51,7 +51,7 @@ const Reviews = () => {
          ) }
 
          <div className="grid gap-4">
-            { ratings.map((item, index) => (
+            { ratings.reverse().map((item, index) => (
                <div key={ index } className="p-4 border border-[#B2DFDB] rounded shadow bg-white">
                   <div className="flex justify-between items-center">
                      <div>

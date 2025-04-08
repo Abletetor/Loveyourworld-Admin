@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AdminContext } from '../../context/AdminContext';
 import LottieLoader from '../../components/LottieLoader';
+import StarRating from "../../components/StarRating";
 
 const DoctorList = () => {
    const { aToken, doctors, getAllDoctors, changeAvailabilty } = useContext(AdminContext);
@@ -38,6 +39,7 @@ const DoctorList = () => {
                   />
                   <div className="p-4">
                      <p className="text-[#008080] text-lg font-medium">{ item.name }</p>
+                     <StarRating rating={ item.averageRating } />
                      <p className="text-[#4A4A4A] text-sm">{ item.speciality }</p>
 
                      <div className="mt-2 flex items-center gap-2 text-sm">
