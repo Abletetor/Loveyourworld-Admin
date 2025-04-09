@@ -2,24 +2,36 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AdminContext } from '../../context/AdminContext';
 import LottieLoader from '../../components/LottieLoader';
 import StarRating from "../../components/StarRating";
+import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 
 const DoctorList = () => {
-   const { aToken, doctors, getAllDoctors, changeAvailabilty } = useContext(AdminContext);
+   const { aToken, doctors, getAllDoctors, changeAvailabilty, pagination } = useContext(AdminContext);
 
    const [loading, setLoading] = useState(true);
+   const [currentPage, setCurrentPage] = useState(1);
+   const limit = 8;
 
-   // *Load All Doctors*
    useEffect(() => {
       if (aToken) {
          setLoading(true);
-         getAllDoctors().finally(() => setLoading(false));
+         getAllDoctors(currentPage, limit).finally(() => setLoading(false));
       }
-   }, [aToken]);
+   }, [aToken, currentPage]);
+
+   const handlePrev = () => {
+      if (currentPage > 1) {
+         setCurrentPage(prev => prev - 1);
+      }
+   };
+
+   const handleNext = () => {
+      if (currentPage < pagination?.totalPages) {
+         setCurrentPage(prev => prev + 1);
+      }
+   };
 
    if (loading) {
-      return (
-         <LottieLoader message="Loading Doctor List..." size="w-100 h-100" />
-      );
+      return <LottieLoader message="Loading Doctor List..." size="w-100 h-100" />;
    }
 
    return (
@@ -56,6 +68,27 @@ const DoctorList = () => {
                   </div>
                </div>
             )) }
+         </div>
+
+         {/* Pagination Controls */ }
+         <div className="mt-6 flex justify-center items-center gap-4">
+            <button
+               onClick={ handlePrev }
+               disabled={ currentPage === 1 }
+               className="text-[#008080] hover:bg-[#E0F2F1] px-3 py-1 rounded disabled:opacity-50 cursor-pointer"
+            >
+               <MdChevronLeft size={ 18 } />
+            </button>
+            <span className="text-sm text-[#4A4A4A]">
+               Page { currentPage } of { pagination?.totalPages }
+            </span>
+            <button
+               onClick={ handleNext }
+               disabled={ currentPage === pagination?.totalPages }
+               className="text-[#008080] hover:bg-[#E0F2F1] px-3 py-1 rounded disabled:opacity-50 cursor-pointer"
+            >
+               <MdChevronRight size={ 18 } />
+            </button>
          </div>
       </div>
    );

@@ -11,18 +11,53 @@ const AdminContextProvider = (props) => {
    const backendUrl = import.meta.env.VITE_BACKEND_URL;
    const [aToken, setAToken] = useState(localStorage.getItem('aToken') ? localStorage.getItem('aToken') : "");
    const [doctors, setDoctors] = useState([]);
+   const [users, setUsers] = useState([]);
    const [appointments, setAppointments] = useState([]);
    const [dashData, setDashData] = useState(false);
    const [dashMessages, setDashMessages] = useState(false);
 
-   // **Get All Doctors**
-   const getAllDoctors = async () => {
+   // pagination state
+   const [pagination, setPagination] = useState({
+      totalDocs: 0,
+      totalPages: 0,
+      currentPage: 1,
+      pageSize: 10
+   });
 
+   // **Get All Doctors (Admin with Pagination)**
+   const getAllDoctors = async (page = 1, limit = 10) => {
       try {
-         const { data } = await axios.post(`${backendUrl}/api/admin/all-doctors`, {}, { headers: { Authorization: `Bearer ${aToken}` } });
+         const { data } = await axios.get(
+            `${backendUrl}/api/admin/all-doctors?page=${page}&limit=${limit}`,
+            {
+               headers: { Authorization: `Bearer ${aToken}` }
+            }
+         );
 
          if (data.success) {
             setDoctors(data.doctors);
+            setPagination(data.pagination);
+         } else {
+            toast.error(data.message);
+         }
+      } catch (error) {
+         handleError(error);
+      }
+   };
+
+   // Get All Users
+   const getAllUsers = async (page = 1, limit = 5) => {
+      try {
+         const { data } = await axios.get(
+            `${backendUrl}/api/admin/all-users?page=${page}&limit=${limit}`,
+            {
+               headers: { Authorization: `Bearer ${aToken}` }
+            }
+         );
+
+         if (data.success) {
+            setUsers(data.users);
+            setPagination(data.pagination);
          } else {
             toast.error(data.message);
          }
@@ -129,7 +164,8 @@ const AdminContextProvider = (props) => {
       getAllAppointment, cancelAppointment,
       getDashboardData, dashData, setDashData,
       getAllMessages, dashMessages, setDashMessages,
-      replyToMessage, deleteMessageById
+      replyToMessage, deleteMessageById,
+      pagination, getAllUsers, users,
    };
 
    return (

@@ -34,6 +34,10 @@ const Sidebar = () => {
                   <img src={ assets.people_icon } alt="People-icon" />
                   <p className='hidden md:block'>Doctor List</p>
                </NavLink>
+               <NavLink to={ '/user-list' } className={ ({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer rounded-r-lg ${isActive ? 'bg-[#E0F2F1] border-r-4 border-[#008080] font-semibold' : ''}` }>
+                  <img src={ assets.people_icon } alt="People-icon" />
+                  <p className='hidden md:block'>Patients List</p>
+               </NavLink>
                <NavLink to={ '/messages' } className={ ({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer rounded-r-lg ${isActive ? 'bg-[#E0F2F1] border-r-4 border-[#008080] font-semibold' : ''}` }>
                   <MdMessage size={ 25 } />
                   <p className='hidden md:block'>Messages</p>
